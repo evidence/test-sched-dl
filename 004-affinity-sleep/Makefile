@@ -1,13 +1,13 @@
 SRCS=$(wildcard *.c)
-OBJS=$(SRCS:.c=.o)
-APPS=$(SRCS:.c=)
+APP=$(shell basename `pwd`)
 
-all: $(APPS)
+all: $(SRCS)
+	$(CC) $(CFLAGS) $(SRCS) -o $(APP) $(LDLIBS)
 
 .PHONY:clean clean_data
 
 clean: clean_data
-	-rm -fr $(OBJS) $(APPS)
+	-rm -fr $(APP)
 
 clean_data:
 	-rm -fr *.txt *.dat*
