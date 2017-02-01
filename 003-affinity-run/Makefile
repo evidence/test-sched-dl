@@ -1,7 +1,7 @@
 SRCS=$(wildcard *.c)
 APP=$(shell basename `pwd`)
 
-all: $(SRCS)
+$(APP): $(SRCS)
 	$(CC) $(CFLAGS) $(SRCS) -o $(APP) $(LDLIBS)
 
 .PHONY:clean clean_data
