@@ -19,7 +19,7 @@ void *periodic_change(void* param)
                 attr.sched_priority = 0;
 		attr.sched_flags = flag;
                 attr.sched_policy = SCHED_DEADLINE;
-                attr.sched_runtime = (80 * 1000 * 1000)/i;
+                attr.sched_runtime = (30 * 1000 * 1000)/i;
                 attr.sched_period = attr.sched_deadline = 40 * 1000 * 1000;
                 if (sched_setattr(pid, &attr, flags) < 0)
                         perror("sched_setattr()");
