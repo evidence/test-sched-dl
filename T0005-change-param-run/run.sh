@@ -12,11 +12,10 @@ dmesg -c > /dev/null
 trace-cmd record -a -r 90 -b 100000 -e sched -o trace.dat ./$DIR &
 sleep 1
 ## ps aux | grep -i $DIR
-PID=`ps aux | grep -i $DIR | grep -v trace-cmd | grep -v grep | xargs -r | awk '{print $2}'`
-echo "PID is $PID"
 sleep 10
 echo "Killing test $DIR..."
 killall $DIR > /dev/null
+sleep 3
 dmesg -c > ./dmesg.txt
 cat dmesg.txt
 

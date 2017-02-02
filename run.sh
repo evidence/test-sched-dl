@@ -43,3 +43,6 @@ for TEST in `ls -d T0* | xargs -r`; do
 	sleep 3
 	cd ..
 done
+
+killall -r 'T00*'
+umount /dev/cpuset
