@@ -6,6 +6,15 @@ if [ "`id -u`" != "0" ]; then
         exit
 fi
 
+do_test() {
+	echo "==================================="
+	echo "Entering directory $1"
+	cd $1
+	sudo ./run.sh $FLAG
+	sleep 3
+	cd ..
+}
+
 echo "Disabling RT throttling..."
 echo -1 > /proc/sys/kernel/sched_rt_period_us
 echo -1 > /proc/sys/kernel/sched_rt_runtime_us
@@ -13,8 +22,8 @@ echo -1 > /proc/sys/kernel/sched_rt_runtime_us
 
 if [ ! -e /dev/cpuset ]; then
 	mkdir /dev/cpuset
-	mount -t cgroup -o cpuset cpuset /dev/cpuset
 fi
+mount -t cgroup -o cpuset cpuset /dev/cpuset
 echo 0 > /dev/cpuset/cpuset.sched_load_balance
 echo 1 > /dev/cpuset/cpuset.cpu_exclusive
 ## echo 2 > /dev/cpuset/cpuset.cpus
@@ -35,14 +44,17 @@ echo 0 > /dev/cpuset/cpu1/cpuset.mems
 echo 1 > /dev/cpuset/cpu1/cpuset.cpu_exclusive
 echo 0 > /dev/cpuset/cpu1/cpuset.mem_exclusive
 
-for TEST in `ls -d T0* | xargs -r`; do
-	echo "==================================="
-	echo "Entering directory $TEST"
-	cd $TEST
-	sudo ./run.sh
-	sleep 3
-	cd ..
-done
+
+if [[ $1 == "" ]];then
+	echo "No test provided. Running all with flag $FLAG."
+	for TEST in `ls -d T0* | xargs -r`; do
+		do_test $TEST
+	done
+else
+	echo "Running test $1 with flag $FLAG"
+	do_test $1
+fi
+
 
 killall -r 'T00*'
 umount /dev/cpuset
