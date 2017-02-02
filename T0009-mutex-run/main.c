@@ -4,6 +4,8 @@
 #include <pthread.h>
 #include "sched_utils.h"
 
+int flag = 0;
+
 pthread_mutex_t mutex;
 
 void *periodic_change(void* param)
@@ -11,9 +13,9 @@ void *periodic_change(void* param)
         unsigned int flags = 0;
         struct sched_attr attr;
         attr.size = sizeof(attr);
-        attr.sched_flags = 0;
         attr.sched_nice = 0;
         attr.sched_priority = 0;
+	attr.sched_flags = flag;
         /* This creates a 10ms/30ms reservation */
         attr.sched_policy = SCHED_DEADLINE;
         attr.sched_runtime = 30 * 1000 * 1000;
@@ -31,8 +33,10 @@ void *periodic_change(void* param)
 }
 
 
-int main (void)
+int main (int argc, char *argv[])
 {
+	if (argc > 1)
+		flag = atoi(argv[1]);
         pthread_t tid;
 	pthread_mutex_init(&mutex, NULL);
         int pid = getpid();
@@ -41,9 +45,9 @@ int main (void)
         unsigned int flags = 0;
         struct sched_attr attr;
         attr.size = sizeof(attr);
-        attr.sched_flags = 0;
         attr.sched_nice = 0;
         attr.sched_priority = 0;
+	attr.sched_flags = flag;
         /* This creates a 10ms/30ms reservation */
         attr.sched_policy = SCHED_DEADLINE;
         attr.sched_runtime = 30 * 1000 * 1000;

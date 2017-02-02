@@ -3,13 +3,17 @@
 #include <stdlib.h>
 #include "sched_utils.h"
 
-int main (void)
+int flag = 0;
+
+int main (int argc, char *argv[])
 {
+	if (argc > 1)
+		flag = atoi(argv[1]);
 	unsigned int flags = 0;
 	struct sched_attr attr;
 	attr.size = sizeof(attr);
-        attr.sched_flags = 0;
         attr.sched_nice = 0;
+	attr.sched_flags = flag;
         attr.sched_priority = 0;
 
        /* This creates a 10ms/30ms reservation */

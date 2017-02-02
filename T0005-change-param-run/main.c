@@ -4,6 +4,8 @@
 #include <pthread.h>
 #include "sched_utils.h"
 
+int flag = 0;
+
 void *periodic_change(void* param)
 {
 	printf("Second pid = %d", getpid());
@@ -13,8 +15,8 @@ void *periodic_change(void* param)
                 unsigned int flags = 0;
                 struct sched_attr attr;
                 attr.size = sizeof(attr);
-                attr.sched_flags = 0;
                 attr.sched_nice = 0;
+		attr.sched_flags = flag;
                 attr.sched_priority = 0;
                 attr.sched_policy = SCHED_DEADLINE;
                 attr.sched_runtime = (30 * 1000 * 1000)/i;
@@ -28,8 +30,10 @@ void *periodic_change(void* param)
 
 
 
-int main (void)
+int main (int argc, char *argv[])
 {
+	if (argc > 1)
+		flag = atoi(argv[1]);
         pthread_t tid;
         int pid = getpid();
         pthread_create(&tid, NULL, periodic_change, (void *) &pid);
@@ -37,8 +41,8 @@ int main (void)
 	unsigned int flags = 0;
 	struct sched_attr attr;
 	attr.size = sizeof(attr);
-        attr.sched_flags = 0;
         attr.sched_nice = 0;
+	attr.sched_flags = flag;
         attr.sched_priority = 0;
 
        /* This creates a 10ms/30ms reservation */
