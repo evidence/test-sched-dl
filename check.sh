@@ -2,7 +2,7 @@
 
 ## Check if we have root permissions
 
-for TEST in `ls -d 0* | xargs -r`; do
+for TEST in `ls -d T0* | xargs -r`; do
 	echo "==================================="
 	echo "Checking directory $TEST"
 	cd $TEST

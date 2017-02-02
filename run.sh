@@ -35,7 +35,7 @@ echo 0 > /dev/cpuset/cpu1/cpuset.mems
 echo 1 > /dev/cpuset/cpu1/cpuset.cpu_exclusive
 echo 0 > /dev/cpuset/cpu1/cpuset.mem_exclusive
 
-for TEST in `ls -d 0* | xargs -r`; do
+for TEST in `ls -d T0* | xargs -r`; do
 	echo "==================================="
 	echo "Entering directory $TEST"
 	cd $TEST

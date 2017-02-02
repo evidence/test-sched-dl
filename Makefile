@@ -2,7 +2,7 @@ export CC=gcc
 export CFLAGS=-std=c99 -Wall -Wextra -I $(PWD)/include/
 export LDLIBS=-lrt -pthread
 
-SUBDIRS := $(wildcard 0*/.)
+SUBDIRS := $(wildcard T0*/.)
 
 all: $(SUBDIRS)
 
