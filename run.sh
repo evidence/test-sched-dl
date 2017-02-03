@@ -55,6 +55,8 @@ else
 	do_test $1
 fi
 
-
+echo "Killing all remaining tasks..."
 killall -r 'T00*'
+echo "Umounting /dev/cpuset..."
 umount /dev/cpuset
+echo "Test finished"
