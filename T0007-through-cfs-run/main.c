@@ -19,8 +19,8 @@ void *periodic_change(void* param)
                 if (i%2){
                         /* This creates a 10ms/30ms reservation */
                         attr.sched_policy = SCHED_DEADLINE;
-                        attr.sched_runtime = 30 * 1000 * 1000;
-                        attr.sched_period = attr.sched_deadline = 40 * 1000 * 1000;
+                        attr.sched_runtime = 10 * 1000 * 1000;
+                        attr.sched_period = attr.sched_deadline = 30 * 1000 * 1000;
                 } else {
                         attr.sched_policy = SCHED_OTHER;
                 }
