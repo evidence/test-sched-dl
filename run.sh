@@ -9,6 +9,16 @@ if [ "`id -u`" != "0" ]; then
         exit
 fi
 
+do_clean() {
+	echo "Killing all remaining tasks..."
+	killall -r 'T00*'
+	echo "Umounting /dev/cpuset..."
+	umount /dev/cpuset
+	echo "Resetting RT throttling..."
+	echo 1000000 > /proc/sys/kernel/sched_rt_period_us
+	echo  950000 > /proc/sys/kernel/sched_rt_runtime_us
+}
+
 do_test() {
 	echo "==================================="
 	echo "Entering directory $1"
@@ -18,14 +28,16 @@ do_test() {
 	cd ..
 }
 
+do_clean
+
 if [[ "$FLAG" == "" ]]; then
-echo "Disabling RT throttling..."
-echo -1 > /proc/sys/kernel/sched_rt_period_us
-echo -1 > /proc/sys/kernel/sched_rt_runtime_us
-else
-echo "Setting RT throttling..."
-echo 1000000 > /proc/sys/kernel/sched_rt_period_us
-echo 950000 > /proc/sys/kernel/sched_rt_runtime_us
+	echo "Disabling RT throttling..."
+	echo -1 > /proc/sys/kernel/sched_rt_period_us
+	echo -1 > /proc/sys/kernel/sched_rt_runtime_us
+	else
+	echo "Setting RT throttling..."
+	echo 1000000 > /proc/sys/kernel/sched_rt_period_us
+	echo  950000 > /proc/sys/kernel/sched_rt_runtime_us
 fi
 
 if [ ! -e /dev/cpuset ]; then
@@ -63,8 +75,5 @@ else
 	do_test $1
 fi
 
-echo "Killing all remaining tasks..."
-killall -r 'T00*'
-echo "Umounting /dev/cpuset..."
-umount /dev/cpuset
+do_clean
 echo "Test finished"
