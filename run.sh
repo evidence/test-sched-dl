@@ -46,7 +46,7 @@ echo 0 > /dev/cpuset/cpu1/cpuset.mem_exclusive
 
 
 if [[ $1 == "" ]];then
-	echo "No test provided. Running all with flag $FLAG."
+	echo "No test provided. Running all with flag $FLAG"
 	for TEST in `ls -d T0* | xargs -r`; do
 		do_test $TEST
 	done
