@@ -8,7 +8,7 @@ int flag = 0;
 
 pthread_mutex_t mutex;
 
-void *periodic_change(void* param)
+void *periodic_change(__attribute__ ((unused)) void* param)
 {
 
         for(;;){
