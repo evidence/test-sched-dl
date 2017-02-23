@@ -14,9 +14,9 @@ for RUN in $SEQ
 do
 ./$DIR $1 &
 done
-sleep 20
+sleep 120
 echo "Killing test $DIR..."
 killall $DIR > /dev/null
-sleep 3
+sleep 60
 dmesg -c > ./dmesg.txt
 
