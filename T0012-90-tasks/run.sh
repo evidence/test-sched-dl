@@ -16,7 +16,7 @@ do
 done
 sleep 120
 echo "Killing test $DIR..."
-killall $DIR > /dev/null
+killall -s SIGKILL $DIR > /dev/null
 sleep 60
 dmesg -c > ./dmesg.txt
 

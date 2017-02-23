@@ -30,7 +30,7 @@ else
 	sleep 2
 fi
 echo "Killing test $DIR..."
-killall $DIR > /dev/null
+killall -s SIGKILL $DIR > /dev/null
 sleep 3
 dmesg -c > ./dmesg.txt
 

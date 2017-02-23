@@ -12,7 +12,7 @@ dmesg -c > /dev/null
 trace-cmd record -a -r 90 -b 100000 -e sched -o trace.dat ./$DIR $1 &
 sleep 10
 echo "Killing test $DIR..."
-killall $DIR > /dev/null
+killall -s SIGKILL $DIR > /dev/null
 sleep 3
 dmesg -c > ./dmesg.txt
 

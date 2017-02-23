@@ -10,7 +10,7 @@ trace-cmd reset
 echo "Running test $DIR..."
 dmesg -c > /dev/null
 trace-cmd record -a -r 90 -b 100000 -e sched -o trace.dat ./$DIR $1 &
-sleep 3
+sleep 5
 ## ps aux | grep -i $DIR
 PID=`ps aux | grep -i $DIR | grep -v trace-cmd | grep -v grep | xargs -r | awk '{print $2}'`
 if [[ $PID == "" ]]; then
@@ -30,7 +30,7 @@ else
 	sleep 2
 fi
 echo "Killing test $DIR..."
-killall $DIR > /dev/null
+killall -s SIGKILL $DIR > /dev/null
 sleep 3
 dmesg -c > ./dmesg.txt
 

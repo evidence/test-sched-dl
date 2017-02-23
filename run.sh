@@ -11,7 +11,7 @@ fi
 
 do_clean() {
 	echo "Killing all remaining tasks..."
-	killall -r 'T00*'
+	killall -s SIGKILL -r 'T00*'
 	echo "Umounting /dev/cpuset..."
 	umount /dev/cpuset
 	echo "Resetting RT throttling..."
@@ -66,7 +66,7 @@ echo 0 > /dev/cpuset/cpu1/cpuset.mem_exclusive
 
 
 if [[ $1 == "" ]];then
-	echo "No test provided. Running all with flag $FLAG"
+	echo "No test provided. Running all tests with flag $FLAG"
 	for TEST in `ls -d T0* | xargs -r`; do
 		do_test $TEST
 	done

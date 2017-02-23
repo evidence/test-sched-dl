@@ -14,7 +14,7 @@ sleep 1
 ## ps aux | grep -i $DIR
 sleep 10
 echo "Killing test $DIR..."
-killall $DIR > /dev/null
+killall -s SIGKILL $DIR > /dev/null
 sleep 3
 dmesg -c > ./dmesg.txt
 
