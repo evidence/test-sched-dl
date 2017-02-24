@@ -24,6 +24,6 @@ int main (int argc, char *argv[])
         if (sched_setattr(0, &attr, flags) < 0)
                 perror("sched_setattr()");
 	else
-		sleep(20);
+		sleep(100);
 	return 0;
 }
