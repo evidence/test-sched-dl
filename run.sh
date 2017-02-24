@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Uncomment to enable reclaiming:
-FLAG=2
+# FLAG=2
 
 ## Check if we have root permissions
 if [ "`id -u`" != "0" ]; then
@@ -39,31 +39,6 @@ if [[ "$FLAG" == "" ]]; then
 	echo 1000000 > /proc/sys/kernel/sched_rt_period_us
 	echo  950000 > /proc/sys/kernel/sched_rt_runtime_us
 fi
-
-if [ ! -e /dev/cpuset ]; then
-	mkdir /dev/cpuset
-fi
-mount -t cgroup -o cpuset cpuset /dev/cpuset
-echo 0 > /dev/cpuset/cpuset.sched_load_balance
-echo 1 > /dev/cpuset/cpuset.cpu_exclusive
-## echo 2 > /dev/cpuset/cpuset.cpus
-
-if [ ! -e /dev/cpuset/cpu0 ]; then
-	mkdir /dev/cpuset/cpu0
-fi
-echo 0 > /dev/cpuset/cpu0/cpuset.cpus
-echo 0 > /dev/cpuset/cpu0/cpuset.mems
-echo 1 > /dev/cpuset/cpu0/cpuset.cpu_exclusive
-echo 0 > /dev/cpuset/cpu0/cpuset.mem_exclusive
-
-if [ ! -e /dev/cpuset/cpu1 ]; then
-	mkdir /dev/cpuset/cpu1
-fi
-echo 1 > /dev/cpuset/cpu1/cpuset.cpus
-echo 0 > /dev/cpuset/cpu1/cpuset.mems
-echo 1 > /dev/cpuset/cpu1/cpuset.cpu_exclusive
-echo 0 > /dev/cpuset/cpu1/cpuset.mem_exclusive
-
 
 if [[ $1 == "" ]];then
 	echo "No test provided. Running all tests with flag $FLAG"
