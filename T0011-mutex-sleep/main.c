@@ -24,10 +24,9 @@ int main (int argc, char *argv[])
 {
 	if (argc > 1)
 		flag = atoi(argv[1]);
-        pthread_t tid;
+        pthread_t t;
 	pthread_mutex_init(&mutex, NULL);
-        int pid = getpid();
-        pthread_create(&tid, NULL, periodic_change, (void *) &pid);
+        pthread_create(&t, NULL, periodic_change, NULL);
 
 
         unsigned int flags = 0;
@@ -40,7 +39,7 @@ int main (int argc, char *argv[])
         attr.sched_policy = SCHED_DEADLINE;
         attr.sched_runtime = 30 * 1000 * 1000;
         attr.sched_period = attr.sched_deadline = 40 * 1000 * 1000;
-        if (sched_setattr(pid, &attr, flags) < 0)
+        if (sched_setattr(gettid(), &attr, flags) < 0)
                 perror("sched_setattr()");
 
         for(;;){

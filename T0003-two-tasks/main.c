@@ -22,7 +22,7 @@ void *periodic_change(__attribute__ ((unused)) void* param)
         attr.sched_policy = SCHED_DEADLINE;
         attr.sched_runtime = 30 * 1000 * 1000;
         attr.sched_period = attr.sched_deadline = 40 * 1000 * 1000;
-        if (sched_setattr(getpid(), &attr, flags) < 0) {
+        if (sched_setattr(gettid(), &attr, flags) < 0) {
                 perror("sched_setattr()");
 		int fd = open ("error.txt", O_WRONLY);
 		char* error_msg = "sched_setattr() error";
@@ -40,9 +40,8 @@ int main (int argc, char *argv[])
 {
 	if (argc > 1)
 		flag = atoi(argv[1]);
-        pthread_t tid;
-        int pid = getpid();
-        pthread_create(&tid, NULL, periodic_change, (void *) &pid);
+	pthread_t t;
+        pthread_create(&t, NULL, periodic_change, NULL);
 
         unsigned int flags = 0;
         struct sched_attr attr;
@@ -54,7 +53,7 @@ int main (int argc, char *argv[])
         attr.sched_policy = SCHED_DEADLINE;
         attr.sched_runtime = 30 * 1000 * 1000;
         attr.sched_period = attr.sched_deadline = 40 * 1000 * 1000;
-        if (sched_setattr(pid, &attr, flags) < 0){
+        if (sched_setattr(gettid(), &attr, flags) < 0){
                 perror("sched_setattr()");
 		int fd = open ("error.txt", O_WRONLY);
 		char* error_msg = "sched_setattr() error";

@@ -8,7 +8,7 @@ int flag = 0;
 
 void *periodic_change(void* param)
 {
-        int pid = *((int*) param);
+        int tid = *((int*) param);
         for (int i = 0;; ++i) {
                 unsigned int flags = 0;
                 struct sched_attr attr;
@@ -24,7 +24,7 @@ void *periodic_change(void* param)
                 } else {
                         attr.sched_policy = SCHED_OTHER;
                 }
-                if (sched_setattr(pid, &attr, flags) < 0)
+                if (sched_setattr(tid, &attr, flags) < 0)
                         perror("sched_setattr()");
                 sleep(1);
         }
@@ -36,9 +36,9 @@ int main (int argc, char *argv[])
 {
 	if (argc > 1)
 		flag = atoi(argv[1]);
-        pthread_t tid;
-        int pid = getpid();
-        pthread_create(&tid, NULL, periodic_change, (void *) &pid);
+        pthread_t t;
+        int tid = gettid();
+        pthread_create(&t, NULL, periodic_change, (void *) &tid);
 
         for(;;);
         return 0;
