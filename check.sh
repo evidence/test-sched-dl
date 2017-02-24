@@ -10,7 +10,7 @@ do_check() {
         echo "-----------------------------------"
         echo "-----------------------------------"
         sleep 1
-	kernelshark ./trace.dat
+	kernelshark ./trace.dat 2> /dev/null
 	cd ..
 }
 
