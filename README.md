@@ -30,9 +30,9 @@ Usage
 
  - Run
 
-       ./run.sh
+              ./run.sh
 
  - Then, check the results with
 
-      ./check.sh
+              ./check.sh
 
