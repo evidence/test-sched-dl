@@ -6,6 +6,7 @@
 #include <sys/stat.h>
 #include <string.h>
 #include <fcntl.h>
+#include <unistd.h>
 #include "sched_utils.h"
 
 int flag = 0;
@@ -35,9 +36,9 @@ void *periodic_change(__attribute__ ((unused)) void* param)
 	}
         for(;;){
 		pthread_mutex_lock(&mutex);
-		for (unsigned long int i = 0; i < 1000000; ++i);
+		for (unsigned long int i = 0; i < 10000000; ++i);
 		pthread_mutex_unlock(&mutex);
-		for (unsigned long int i = 0; i < 1000000; ++i);
+		usleep(500000);
 	}
         return NULL;
 }
@@ -73,9 +74,9 @@ int main (int argc, char *argv[])
 
         for(;;){
 		pthread_mutex_lock(&mutex);
-		for (unsigned long int i = 0; i < 1000000; ++i);
+		for (unsigned long int i = 0; i < 10000000; ++i);
 		pthread_mutex_unlock(&mutex);
-		for (unsigned long int i = 0; i < 1000000; ++i);
+		usleep(500000);
 	}
         return 0;
 }
