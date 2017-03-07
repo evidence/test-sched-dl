@@ -2,7 +2,7 @@ Tests for SCHED_DEADLINE
 ========================
 
 This is a minimal set of scripts to test and visualize on kernelshark the
-behavior of SCHED_DEADLINE under several corcumstances (e.g., migration, switch
+behavior of SCHED_DEADLINE under several circumstances (e.g., migration, switch
 to CFS, parameters change, etc.).
 
 Requirements
@@ -28,11 +28,19 @@ Requirements
 Usage
 -----
 
+ - Clean old results:
+
+              make clean
+
+ - Build:
+
+              make
+
  - Run
 
-              ./run.sh
+              sudo ./run.sh [test]
 
  - Then, check the results with
 
-              ./check.sh
+              ./check.sh [test]
 
