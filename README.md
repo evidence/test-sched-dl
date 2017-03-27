@@ -1,9 +1,11 @@
 Tests for SCHED_DEADLINE
 ========================
 
-This is a minimal set of scripts to test and visualize on kernelshark the
-behavior of SCHED_DEADLINE under several circumstances (e.g., migration, switch
-to CFS, parameters change, etc.).
+This is a minimal set of scripts to test and visualize on
+[kernelshark](http://rostedt.homelinux.com/kernelshark/) the
+behavior of the [SCHED_DEADLINE](https://en.wikipedia.org/wiki/SCHED_DEADLINE)
+Linux scheduler under several circumstances (e.g., migration, switch to CFS,
+parameters change, etc.).
 
 Requirements
 ------------
@@ -40,7 +42,47 @@ Usage
 
               sudo ./run.sh [test]
 
+   Note: for testing the [GRUB](http://lkml.iu.edu/hypermail/linux/kernel/1703.2/06174.html)
+   algorithm, uncomment ```FLAG=2``` inside ```run.sh```.
+
  - Then, check the results with
 
               ./check.sh [test]
 
+Code coverage
+-------------
+
+ - Build the kernel with the following additional symbols:
+   - ```CONFIG_DEBUG_FS```
+   - ```CONFIG_GCOV_KERNEL```
+   - ```CONFIG_GCOV_FORMAT_AUTODETECT```
+
+ - Add
+
+              GCOV_PROFILE_deadline.o := y
+
+   to ```kernel/sched/Makefile```
+
+ - On the target, mount debugfs if it is not yet mounted:
+
+              mount -t debugfs none /sys/kernel/debug
+
+ - Run the tests
+
+ - Copy *.gcda and *.gcno files from ```/sys/kernel/debug/gcov/``` to your
+   build machine e.g. in directory ```/tmp/gcov```
+
+ - For gcov, enter the directory of the built kernel and type
+
+              (your_toolchain)-gcov -o /tmp/gcov deadline.c
+
+   Then, read the produced .gcov file
+
+ - Alternatively, for lcov (frontend to gcov), enter the directory of the built
+   kernel and type
+
+              lcov -c --base-directory . -d /tmp/gcov/ --output-file coverage.info
+
+              genhtml -o /tmp/coverage/ coverage.info
+
+   Then, enter directory ```/tmp/coverage``` and open ```index.html```.
