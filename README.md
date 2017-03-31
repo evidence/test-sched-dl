@@ -45,6 +45,10 @@ Usage
    Note: for testing the [GRUB](http://lkml.iu.edu/hypermail/linux/kernel/1703.2/06174.html)
    algorithm, uncomment ```FLAG=2``` inside ```run.sh```.
 
+   Note: besides visualizing the kernelshark trace, you may want to instrument
+   the code in ```deadline.c``` with ```printk``` instructions to check the
+   correctness of specific portions of code.
+
  - Then, check the results with
 
               ./check.sh [test]
@@ -86,3 +90,5 @@ Code coverage
               genhtml -o /tmp/coverage/ coverage.info
 
    Then, enter directory ```/tmp/coverage``` and open ```index.html```.
+
+ - Note: currently, the tests cover **84%** of the ```deadline.c``` file.
