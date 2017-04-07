@@ -9,7 +9,7 @@ fi
 $TRACECMD reset
 echo "Running test $DIR..."
 dmesg -c > /dev/null
-$TRACECMD record -a -r 90 -b 100000 -e sched -o trace.dat ./$DIR $TESTDL_SCHED_FLAG &
+$TRACECMD record -a -r 90 -b 100000 -e sched -e power -o trace.dat ./$DIR $TESTDL_SCHED_FLAG &
 sleep 1
 ## ps aux | grep -i $DIR
 sleep 10
