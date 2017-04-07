@@ -39,10 +39,10 @@ if [ ! -e $DIR ]; then
 	echo "ERROR: File not compiled! Type make"
 	exit
 fi
-trace-cmd reset
+$TRACECMD reset
 echo "Running test $DIR..."
 dmesg -c > /dev/null
-trace-cmd record -a -r 90 -b 100000 -e sched -o trace.dat ./$DIR $1 &
+$TRACECMD record -a -r 90 -b 100000 -e sched -o trace.dat ./$DIR $TESTDL_SCHED_FLAG &
 sleep 3
 ## ps aux | grep -i $DIR
 PID=`ps aux | grep -i $DIR | grep -v trace-cmd | grep -v grep | xargs -r | awk '{print $2}'`

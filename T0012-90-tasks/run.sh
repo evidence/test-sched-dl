@@ -6,13 +6,13 @@ if [ ! -e $DIR ]; then
 	echo "ERROR: File not compiled! Type make"
 	exit
 fi
-trace-cmd reset
+$TRACECMD reset
 echo "Running test $DIR..."
 dmesg -c > /dev/null
 SEQ=$(seq 1 90)
 for RUN in $SEQ
 do
-./$DIR $1 &
+./$DIR $TESTDL_SCHED_FLAG &
 done
 sleep 120
 echo "Killing test $DIR..."

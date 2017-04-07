@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Change to specify a specific path for kernelshark:
+KERNELSHARK=kernelshark
 
 do_check() {
 	echo "==================================="
@@ -10,7 +12,7 @@ do_check() {
         echo "-----------------------------------"
         echo "-----------------------------------"
         sleep 1
-	kernelshark ./trace.dat 2> /dev/null
+	$KERNELSHARK ./trace.dat 2> /dev/null
 	cd ..
 }
 
