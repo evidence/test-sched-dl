@@ -40,6 +40,7 @@ if [ ! -e $DIR ]; then
 	exit
 fi
 $TRACECMD reset
+rm -f dmesg.txt
 echo "Running test $DIR..."
 dmesg -c > /dev/null
 $TRACECMD record -a -r 90 -b 100000 -e sched -e power -o trace.dat ./$DIR $TESTDL_SCHED_FLAG &
@@ -65,6 +66,6 @@ fi
 echo "Killing test $DIR..."
 killall -s SIGKILL $DIR > /dev/null
 sleep 3
-dmesg -c > ./dmesg.txt
+dmesg -c >> ./dmesg.txt
 disable_cpuset
 
