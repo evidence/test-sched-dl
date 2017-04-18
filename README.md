@@ -7,6 +7,9 @@ behavior of the [SCHED_DEADLINE](https://en.wikipedia.org/wiki/SCHED_DEADLINE)
 Linux scheduler under several circumstances (e.g., migration, switch to CFS,
 parameters change, etc.).
 
+The work has been done in the context of the
+[HERCULES European project](http://hercules2020.eu).
+
 Requirements
 ------------
 
