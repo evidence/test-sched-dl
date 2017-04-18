@@ -1,0 +1,24 @@
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index cdeb4bb..d7d1fcd 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -74,6 +74,9 @@ void add_rq_bw(u64 dl_bw, struct dl_rq *dl_rq)
+ 	lockdep_assert_held(&(rq_of_dl_rq(dl_rq))->lock);
+ 	dl_rq->this_bw += dl_bw;
+ 	SCHED_WARN_ON(dl_rq->this_bw < old); /* overflow */
++	trace_printk("rq bw change: +++ old_bw=%llu new_bw=%llu delta=%llu cpu=%d\n",
++			old, dl_rq->this_bw, dl_bw, rq_of_dl_rq(dl_rq)->cpu);
++
+ }
+ 
+ static inline
+@@ -87,6 +90,9 @@ void sub_rq_bw(u64 dl_bw, struct dl_rq *dl_rq)
+ 	if (dl_rq->this_bw > old)
+ 		dl_rq->this_bw = 0;
+ 	SCHED_WARN_ON(dl_rq->running_bw > dl_rq->this_bw);
++	trace_printk("rq bw change: --- old_bw=%llu new_bw=%llu delta=%llu cpu=%d\n",
++			old, dl_rq->this_bw, dl_bw, rq_of_dl_rq(dl_rq)->cpu);
++
+ }
+ 
+ void dl_change_utilization(struct task_struct *p, u64 new_bw)
