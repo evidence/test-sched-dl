@@ -2,6 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include "sched_utils.h"
 
 int flag = 0;
@@ -24,8 +28,14 @@ void *periodic_change(void* param)
                 } else {
                         attr.sched_policy = SCHED_OTHER;
                 }
-                if (sched_setattr(tid, &attr, flags) < 0)
+                if (sched_setattr(tid, &attr, flags) < 0){
+			int fd = open ("dmesg.txt", O_WRONLY);
+			char* error_msg = "ERROR: sched_setattr()";
+			write(fd, error_msg, strlen(error_msg));
+			fsync(fd);
+			close(fd);
                         perror("sched_setattr()");
+                }
                 sleep(1);
         }
         return NULL;

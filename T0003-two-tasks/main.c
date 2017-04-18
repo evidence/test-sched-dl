@@ -24,8 +24,8 @@ void *periodic_change(__attribute__ ((unused)) void* param)
         attr.sched_period = attr.sched_deadline = 40 * 1000 * 1000;
         if (sched_setattr(gettid(), &attr, flags) < 0) {
                 perror("sched_setattr()");
-		int fd = open ("error.txt", O_WRONLY);
-		char* error_msg = "sched_setattr() error";
+		int fd = open ("dmesg.txt", O_WRONLY);
+		char* error_msg = "ERROR: sched_setattr()";
 		write(fd, error_msg, strlen(error_msg));
 		fsync(fd);
 		close(fd);
@@ -56,7 +56,7 @@ int main (int argc, char *argv[])
         if (sched_setattr(gettid(), &attr, flags) < 0){
                 perror("sched_setattr()");
 		int fd = open ("error.txt", O_WRONLY);
-		char* error_msg = "sched_setattr() error";
+		char* error_msg = "ERROR: sched_setattr()";
 		write(fd, error_msg, strlen(error_msg));
 		fsync (fd);
 		close(fd);
