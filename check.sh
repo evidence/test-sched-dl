@@ -4,14 +4,11 @@
 KERNELSHARK=kernelshark
 
 do_check() {
-	echo "==================================="
-	echo "==================================="
 	echo "Checking directory $1"
 	cd $1
-	cat dmesg.txt
-        echo "-----------------------------------"
-        echo "-----------------------------------"
-        sleep 1
+	if [[ `cat dmesg.txt | xargs -r` != "" ]]; then
+		xterm -e /bin/bash -c 'printf "Dmesg content:\n\n"; cat dmesg.txt; printf "\nPress Enter to close"; read;' &
+	fi
 	$KERNELSHARK ./trace.dat 2> /dev/null
 	cd ..
 }
