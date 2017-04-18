@@ -8,13 +8,16 @@ if [ ! -e $DIR ]; then
 fi
 $TRACECMD reset
 rm -f dmesg.txt
+$TRACECMD start -a -r 90 -b 100000 -e sched -e power
 echo "Running test $DIR..."
 dmesg -c > /dev/null
-$TRACECMD record -a -r 90 -b 100000 -e sched -e power -o trace.dat ./$DIR $TESTDL_SCHED_FLAG &
+./$DIR $TESTDL_SCHED_FLAG &
 sleep 10
 echo "Killing test $DIR..."
 killall -s SIGKILL $DIR > /dev/null
 sleep 3
 dmesg -c >> ./dmesg.txt
 chmod 777 dmesg.txt
+$TRACECMD extract -o trace.dat
+$TRACECMD stop
 
