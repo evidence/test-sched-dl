@@ -26,6 +26,7 @@ Requirements
    - ```trace-cmd```
    - ```kernelshark```
    - ```psmisc```
+   - ```xterm```
 
 Usage
 -----
