@@ -15,4 +15,5 @@ $TRACECMD record -a -r 90 -b 100000 -e sched -e power -o trace.dat ./$DIR $TESTD
 ## echo "Killing test $DIR..."
 ## killall $DIR > /dev/null
 dmesg -c >> ./dmesg.txt
+chmod 777 dmesg.txt
 

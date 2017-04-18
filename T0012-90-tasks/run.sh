@@ -21,6 +21,7 @@ echo "Killing test $DIR..."
 killall -s SIGKILL $DIR > /dev/null
 sleep 60
 dmesg -c >> ./dmesg.txt
+chmod 777 dmesg.txt
 $TRACECMD extract -o trace.dat
 $TRACECMD stop
 

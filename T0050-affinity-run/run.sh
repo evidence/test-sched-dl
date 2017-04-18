@@ -41,14 +41,14 @@ if [ ! -e $DIR ]; then
 fi
 $TRACECMD reset
 rm -f dmesg.txt
+$TRACECMD start -a -r 90 -b 100000 -e sched -e power
 echo "Running test $DIR..."
 dmesg -c > /dev/null
-$TRACECMD record -a -r 90 -b 100000 -e sched -e power -o trace.dat ./$DIR $TESTDL_SCHED_FLAG &
-sleep 3
-## ps aux | grep -i $DIR
-PID=`ps aux | grep -i $DIR | grep -v trace-cmd | grep -v grep | xargs -r | awk '{print $2}'`
+./$DIR $TESTDL_SCHED_FLAG &
+sleep 5
+PID=`ps aux | grep -i $DIR | grep -v grep | xargs -r | awk '{print $2}'`
 if [[ $PID == "" ]]; then
-	echo "ERROR: no PID!"
+	echo "ERROR: no PID! PID = $PID"
 	ps aux | grep -i $DIR
 else
 	echo "PID is $PID"
@@ -67,5 +67,8 @@ echo "Killing test $DIR..."
 killall -s SIGKILL $DIR > /dev/null
 sleep 3
 dmesg -c >> ./dmesg.txt
+chmod 777 dmesg.txt
+$TRACECMD extract -o trace.dat
+$TRACECMD stop
 disable_cpuset
 

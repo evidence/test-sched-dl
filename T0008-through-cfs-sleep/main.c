@@ -29,8 +29,8 @@ void *periodic_change(void* param)
                         attr.sched_policy = SCHED_OTHER;
                 }
                 if (sched_setattr(tid, &attr, flags) < 0){
-			int fd = open ("dmesg.txt", O_WRONLY);
-			char* error_msg = "ERROR: sched_setattr()";
+			int fd = open ("dmesg.txt", O_WRONLY|O_CREAT);
+			char* error_msg = "ERROR: sched_setattr()\n";
 			write(fd, error_msg, strlen(error_msg));
 			fsync(fd);
 			close(fd);
