@@ -20,4 +20,5 @@ dmesg -c >> ./dmesg.txt
 chmod 777 dmesg.txt
 $TRACECMD extract -o trace.dat
 $TRACECMD stop
+$TRACECMD report > trace.txt
 
