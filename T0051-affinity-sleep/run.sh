@@ -70,6 +70,6 @@ dmesg -c >> ./dmesg.txt
 chmod 777 dmesg.txt
 $TRACECMD extract -o trace.dat
 $TRACECMD stop
-$TRACECMD report > trace.txt
+$TRACECMD report 1> trace.txt 2> /dev/null
 disable_cpuset
 
