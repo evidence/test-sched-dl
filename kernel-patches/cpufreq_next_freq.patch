@@ -1,0 +1,26 @@
+From 58b88706c5a77ec3a1eb7efe8727fc44ccecdda1 Mon Sep 17 00:00:00 2001
+From: Claudio Scordino <claudio@evidence.eu.com>
+Date: Mon, 15 May 2017 16:44:34 +0200
+Subject: [PATCH] DEBUG: trace_printk instructions for next_freq
+
+Signed-off-by: Claudio Scordino <claudio@evidence.eu.com>
+---
+ kernel/sched/cpufreq_schedutil.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
+index 4153b9f..e06dc02 100644
+--- a/kernel/sched/cpufreq_schedutil.c
++++ b/kernel/sched/cpufreq_schedutil.c
+@@ -99,6 +99,8 @@ static void sugov_update_commit(struct sugov_policy *sg_policy, u64 time,
+ {
+ 	struct cpufreq_policy *policy = sg_policy->policy;
+ 
++	trace_printk("next_freq=%u cpu_id=%d\n", next_freq, this_rq()->cpu);
++
+ 	if (sg_policy->next_freq == next_freq)
+ 		return;
+ 
+-- 
+2.7.4
+
