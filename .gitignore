@@ -1,4 +1,5 @@
 */dmesg.txt
 */trace.dat
+*/*.txt
 */T00*
 trace-cmd
