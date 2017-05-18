@@ -52,7 +52,7 @@ Usage
    Note: besides visualizing the kernelshark trace, you may want to instrument
    the code in ```deadline.c``` with ```printk()``` or ```trace_printk()```
    instructions to check the behavior of specific portions of code.
-   The directory [kernel-patches](kernel-patches) contains a few example of
+   The directory [kernel-patches](kernel-patches) contains a few examples of
    patches.
 
  - Then, check the results with
