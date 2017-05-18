@@ -6,9 +6,11 @@ import os # Used for files
 from subprocess import call
 
 num_cpus=4
-data = [("bw",      "bprint:",          "cpu=",     "new_bw="),
-       #("freq",    "cpu_frequency:",   "cpu_id=",  "state="),
-        ("freq",   "bprint:",          "cpu_id=",  "next_freq=")]
+data = [
+        ("bwact",      "sched_dl_grub:",          "cpu_id=",     "running_bw="),
+        ("bwtot",      "sched_dl_grub:",          "cpu_id=",     "this_bw="),
+##         ("freq",    "cpu_frequency:",   "",  "state="),
+        ("freq",   "bprint:",          "",  "next_freq=")]
 
 if len(sys.argv) == 1:
     print "Error: no file provided!"
@@ -58,4 +60,5 @@ for cpu in range (0, num_cpus):
     gp_set_title = "\"TITLE='CPU " + str(cpu) + "'\""
     gp_set_max = "\"MAX='" + str(len(data)-1) + "'\""
     gp_set_cpu = "\"CPU_ID='" + str(cpu) + "'\""
+    print "Running", "gnuplot -e ", gp_set_title , " -e " , gp_set_max , " -e " , gp_set_cpu + " ../plot.gp"
     os.system ("gnuplot -e "+ gp_set_title + " -e " + gp_set_max + " -e " + gp_set_cpu + " ../plot.gp")
