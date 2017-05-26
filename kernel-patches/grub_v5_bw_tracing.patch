@@ -1,7 +1,10 @@
-From 860cbd2a626701ef6143b1952d3f32942ccf7900 Mon Sep 17 00:00:00 2001
+From 372df78e5502b040f0b4eb6f8cb844d64ce1df73 Mon Sep 17 00:00:00 2001
 From: Claudio Scordino <claudio@evidence.eu.com>
 Date: Thu, 18 May 2017 12:24:57 +0200
 Subject: [PATCH] sched/deadline: add GRUB bw change tracepoints
+
+This patch adds a tracepoint for tracing the total and running
+bandwidths of GRUB's runqueue.
 
 Signed-off-by: Claudio Scordino <claudio@evidence.eu.com>
 ---
@@ -10,7 +13,7 @@ Signed-off-by: Claudio Scordino <claudio@evidence.eu.com>
  2 files changed, 40 insertions(+)
 
 diff --git a/include/trace/events/sched.h b/include/trace/events/sched.h
-index 9e3ef6c..3f5a57f 100644
+index 9e3ef6c..fa154e3 100644
 --- a/include/trace/events/sched.h
 +++ b/include/trace/events/sched.h
 @@ -543,6 +543,38 @@ TRACE_EVENT(sched_swap_numa,
@@ -35,7 +38,7 @@ index 9e3ef6c..3f5a57f 100644
 +		__entry->cpu_id = cpu_id;
 +	),
 +
-+	TP_printk("this_bw=%Lu running_bw=%Lu cpu_id=%lu",
++	TP_printk("total_bw=%Lu running_bw=%Lu cpu_id=%lu",
 +		(unsigned long long)__entry->this_bw,
 +		(unsigned long long)__entry->running_bw,
 +		(unsigned long)__entry->cpu_id)
