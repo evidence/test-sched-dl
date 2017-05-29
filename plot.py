@@ -8,7 +8,7 @@ from subprocess import call
 num_cpus=4
 data = [
         ("bwact",      "sched_dl_grub:",          "cpu_id=",     "running_bw="),
-        ("bwtot",      "sched_dl_grub:",          "cpu_id=",     "this_bw="),
+        ("bwtot",      "sched_dl_grub:",          "cpu_id=",     "total_bw="),
 ##         ("freq",    "cpu_frequency:",   "",  "state="),
         ("freq",   "bprint:",          "",  "next_freq=")]
 
