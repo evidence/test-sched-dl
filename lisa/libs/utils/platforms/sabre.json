@@ -1,0 +1,14 @@
+{
+	// HiKey boards have two SMP clusters
+	// Even being an SMP platform, being a two cluster system
+	// we can still load the devlib's bl module to get access
+	// to all the per-cluster functions it exposes
+	"board" : {
+		"cores" : [
+			"A9", "A9", "A9", "A9"
+		],
+		"modules"  : [ "cpufreq" ]
+	}
+}
+
+// vim: set tabstop=4:
