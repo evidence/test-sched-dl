@@ -60,7 +60,7 @@ Usage
               ./check.sh [test]
 
  - Alternatively, the tests can be also run and checked using ARM's
-   [LISA framework] (https://github.com/ARM-software/lisa).
+   [LISA framework](https://github.com/ARM-software/lisa).
    The directory [lisa](lisa) contains an example of notebook for running
    the test suite from LISA.
 
