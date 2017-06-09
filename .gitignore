@@ -2,4 +2,5 @@
 */trace.dat
 */*.txt
 */T00*
+*/calibrate
 trace-cmd
