@@ -1,22 +1,24 @@
-From 372df78e5502b040f0b4eb6f8cb844d64ce1df73 Mon Sep 17 00:00:00 2001
+From d5a9e4ec3e775c8442d18486c752baeb8e19faa1 Mon Sep 17 00:00:00 2001
 From: Claudio Scordino <claudio@evidence.eu.com>
-Date: Thu, 18 May 2017 12:24:57 +0200
+Date: Tue, 27 Jun 2017 12:39:09 +0200
 Subject: [PATCH] sched/deadline: add GRUB bw change tracepoints
 
 This patch adds a tracepoint for tracing the total and running
 bandwidths of GRUB's runqueue.
 
 Signed-off-by: Claudio Scordino <claudio@evidence.eu.com>
+Signed-off-by: Juri Lelli <juri.lelli@arm.com>
+Cc: Luca Abeni <luca.abeni@santannapisa.it>
 ---
  include/trace/events/sched.h | 32 ++++++++++++++++++++++++++++++++
- kernel/sched/deadline.c      |  8 ++++++++
- 2 files changed, 40 insertions(+)
+ kernel/sched/deadline.c      | 11 +++++++++++
+ 2 files changed, 43 insertions(+)
 
 diff --git a/include/trace/events/sched.h b/include/trace/events/sched.h
-index 9e3ef6c..fa154e3 100644
+index ae1409f..050fcb2 100644
 --- a/include/trace/events/sched.h
 +++ b/include/trace/events/sched.h
-@@ -543,6 +543,38 @@ TRACE_EVENT(sched_swap_numa,
+@@ -545,6 +545,38 @@ TRACE_EVENT(sched_swap_numa,
  			__entry->dst_cpu, __entry->dst_nid)
  );
  
@@ -27,9 +29,9 @@ index 9e3ef6c..fa154e3 100644
 +	TP_ARGS(this_bw, running_bw, cpu_id),
 +
 +	TP_STRUCT__entry(
-+		__field(	u64,		this_bw		)
-+		__field(	u64,		running_bw	)
-+		__field(	u32,		cpu_id		)
++		__field(u64,		this_bw)
++		__field(u64,		running_bw)
++		__field(u32,		cpu_id)
 +	),
 +
 +	TP_fast_assign(
@@ -38,7 +40,7 @@ index 9e3ef6c..fa154e3 100644
 +		__entry->cpu_id = cpu_id;
 +	),
 +
-+	TP_printk("total_bw=%Lu running_bw=%Lu cpu_id=%lu",
++	TP_printk("total_bw=%llu running_bw=%llu cpu_id=%lu",
 +		(unsigned long long)__entry->this_bw,
 +		(unsigned long long)__entry->running_bw,
 +		(unsigned long)__entry->cpu_id)
@@ -56,48 +58,51 @@ index 9e3ef6c..fa154e3 100644
   * Tracepoint for waking a polling cpu without an IPI.
   */
 diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 796ba19..a2f333b 100644
+index a84299f..ae5c7ef 100644
 --- a/kernel/sched/deadline.c
 +++ b/kernel/sched/deadline.c
-@@ -17,6 +17,8 @@
+@@ -17,6 +17,7 @@
  #include "sched.h"
  
  #include <linux/slab.h>
 +#include <trace/events/sched.h>
-+
+ #include <uapi/linux/sched/types.h>
  
  struct dl_bandwidth def_dl_bandwidth;
- 
-@@ -52,6 +54,7 @@ void add_running_bw(u64 dl_bw, struct dl_rq *dl_rq)
+@@ -85,6 +86,8 @@ void add_running_bw(u64 dl_bw, struct dl_rq *dl_rq)
  	dl_rq->running_bw += dl_bw;
  	SCHED_WARN_ON(dl_rq->running_bw < old); /* overflow */
  	SCHED_WARN_ON(dl_rq->running_bw > dl_rq->this_bw);
-+	trace_sched_dl_grub(dl_rq->this_bw, dl_rq->running_bw, rq_of_dl_rq(dl_rq)->cpu);
++	trace_sched_dl_grub(dl_rq->this_bw, dl_rq->running_bw,
++			rq_of_dl_rq(dl_rq)->cpu);
  }
  
  static inline
-@@ -64,6 +67,7 @@ void sub_running_bw(u64 dl_bw, struct dl_rq *dl_rq)
+@@ -97,6 +100,8 @@ void sub_running_bw(u64 dl_bw, struct dl_rq *dl_rq)
  	SCHED_WARN_ON(dl_rq->running_bw > old); /* underflow */
  	if (dl_rq->running_bw > old)
  		dl_rq->running_bw = 0;
-+	trace_sched_dl_grub(dl_rq->this_bw, dl_rq->running_bw, rq_of_dl_rq(dl_rq)->cpu);
++	trace_sched_dl_grub(dl_rq->this_bw, dl_rq->running_bw,
++			rq_of_dl_rq(dl_rq)->cpu);
  }
  
  static inline
-@@ -74,6 +78,8 @@ void add_rq_bw(u64 dl_bw, struct dl_rq *dl_rq)
+@@ -107,6 +112,9 @@ void add_rq_bw(u64 dl_bw, struct dl_rq *dl_rq)
  	lockdep_assert_held(&(rq_of_dl_rq(dl_rq))->lock);
  	dl_rq->this_bw += dl_bw;
  	SCHED_WARN_ON(dl_rq->this_bw < old); /* overflow */
-+	trace_sched_dl_grub(dl_rq->this_bw, dl_rq->running_bw, rq_of_dl_rq(dl_rq)->cpu);
++	trace_sched_dl_grub(dl_rq->this_bw, dl_rq->running_bw,
++			rq_of_dl_rq(dl_rq)->cpu);
 +
  }
  
  static inline
-@@ -87,6 +93,8 @@ void sub_rq_bw(u64 dl_bw, struct dl_rq *dl_rq)
+@@ -120,6 +128,9 @@ void sub_rq_bw(u64 dl_bw, struct dl_rq *dl_rq)
  	if (dl_rq->this_bw > old)
  		dl_rq->this_bw = 0;
  	SCHED_WARN_ON(dl_rq->running_bw > dl_rq->this_bw);
-+	trace_sched_dl_grub(dl_rq->this_bw, dl_rq->running_bw, rq_of_dl_rq(dl_rq)->cpu);
++	trace_sched_dl_grub(dl_rq->this_bw, dl_rq->running_bw,
++			rq_of_dl_rq(dl_rq)->cpu);
 +
  }
  
