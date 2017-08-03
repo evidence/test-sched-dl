@@ -1,17 +1,24 @@
 Tests for SCHED_DEADLINE
 ========================
 
-This is a minimal set of scripts to test and visualize on
-[kernelshark](http://rostedt.homelinux.com/kernelshark/) the
-behavior of the [SCHED_DEADLINE](https://en.wikipedia.org/wiki/SCHED_DEADLINE)
-Linux scheduler under several circumstances (e.g., migration, switch to CFS,
+This is a minimal set of unit tests for the
+[SCHED_DEADLINE](https://en.wikipedia.org/wiki/SCHED_DEADLINE) Linux scheduler,
+especially for the
+[GRUB](http://lkml.iu.edu/hypermail/linux/kernel/1703.2/06174.html) algorithm
+introduced with release 4.13.
+
+The scripts allow to test and visualize on
+[kernelshark](http://rostedt.homelinux.com/kernelshark/) the behavior of the
+scheduler under several circumstances (e.g., task migration, switch to CFS,
 parameters change, etc.).
 
 The work has been done in the context of the
-[HERCULES European project](http://hercules2020.eu).
+[HERCULES European project](http://hercules2020.eu) and has been used to
+validate the implementation of the GRUB algorithm.
 
-Requirements
-------------
+
+Target requirements
+-------------------
 
  - A Linux kernel 3.14+ compiled with the following symbols:
    - ```CONFIG_FTRACE```
@@ -31,6 +38,13 @@ Requirements
    - ```psmisc```
    - ```xterm```
 
+Note: besides visualizing the kernelshark trace, you may want to instrument
+the code in ```deadline.c``` with ```trace_printk()``` instructions to check
+the behavior of specific portions of code.
+In particular, the directory [kernel-patches](kernel-patches) contains an
+example of patch to trace the runqueues' bandwidths of GRUB.
+
+
 Usage
 -----
 
@@ -46,14 +60,8 @@ Usage
 
               sudo ./run.sh [test]
 
-   Note: for testing the [GRUB](http://lkml.iu.edu/hypermail/linux/kernel/1703.2/06174.html)
-   algorithm, uncomment ```TESTDL_SCHED_FLAG=2``` inside ```run.sh```.
-
-   Note: besides visualizing the kernelshark trace, you may want to instrument
-   the code in ```deadline.c``` with ```printk()``` or ```trace_printk()```
-   instructions to check the behavior of specific portions of code.
-   The directory [kernel-patches](kernel-patches) contains a few examples of
-   patches.
+   Note: for testing the reclaiming feature of GRUB, uncomment
+   ```TESTDL_SCHED_FLAG=2``` inside ```run.sh```.
 
  - Then, check the results with
 
